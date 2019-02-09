@@ -102,14 +102,14 @@ def bracket_setup():
 
     bracket = Bracket(playersNum, player_list)
     match_list = []
-    single_match = [None, None]
     print("--------Tournament Bracket------------")
     for y in range(0, math.ceil(bracket_size / 2)):
+        single_match = [None, None]
         if y + 1 != playersNum and y != 0:
             y = y + 1
         print("--------Bracket:------------")
 #       print(y)
-        print("Player 1:" + player_list[y].name)
+        print("Player 1: " + player_list[y].name)
         single_match[0] = player_list[y]
 
         # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
@@ -121,7 +121,6 @@ def bracket_setup():
             y = y + 1
         print("Player 2: " + player_list[y].name)
         single_match[1] = player_list[y]
-
         # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
         # #Calls the Espeak TTS Engine to read aloud the Numbers
         # call([cmd_beg+cmd+cmd_end], shell=True)
@@ -153,25 +152,25 @@ def checkPlayers(players, playersDecrement):
 
 def bracket_progression(bracket):
     """Progresses bracket through each round until the end.
-    :param match_list: list of strings that contain the matches from the previous round
+    :param bracket: bracket info for current round
     :return: New bracket for new round"""
+    #print(bracket.current_matches)
     winning_players = []
-    out_matches = []
-    i = 1
     for match in bracket.current_matches:
-        winner = input("Who won round " + str(i) + " between " + str(match[0]) + " and " + str(match[1]) + "?\n")
-        i += 1
+        winner = input("Who won between " + str(match[0]) + " and " + str(match[1]) + "?\n")
         for player in bracket.player_list:
             if player.name == winner:
                 winning_players.append(player)
-            else:
-                player.status = 0  # Deactivate losing player's status
+    for player in bracket.player_list:
+        if player not in winning_players:
+            player.status = 0  # Deactivate losing player's status
+            bracket.size -= 1
     bracket.player_list = winning_players
     playersNum = checkPlayers(len(bracket.player_list), len(bracket.player_list))
     match_list = []
-    single_match = [None, None]
     print("--------Tournament Bracket------------")
     for y in range(0, math.ceil(bracket.size / 2)):
+        single_match = [None, None]
         if y + 1 != playersNum and y != 0:
             y = y + 1
         print("--------Bracket:------------")
@@ -218,5 +217,6 @@ def main():
     while len(bracket.current_matches) > 1:
         bracket = bracket_progression(bracket)
     # final_round
+
 
 main()
