@@ -1,17 +1,10 @@
 # Smash Bracket v1
 # CalvinHacks 2019
 # Created by:
-<<<<<<< HEAD
 
 #from num2words import num2words
 from random import shuffle
 import math
-=======
-from num2words import num2words
-from random import shuffle
-import math
-
->>>>>>> 173157c1119d1b89547b6eb276e18e4484cc68c5
 
 
 class Bracket:
@@ -69,6 +62,24 @@ def sort_players(player_list):
                 i += 1
     return sorted_list
 
+def banner():
+    """
+    Run banner for program.
+    :return:
+    """
+    print()
+    print()
+    print()
+    print(r'''   ________                     .__      __________                       __           __   
+ /   _____/ _____ _____    _____|  |__   \______   \____________    ____ |  | __ _____/  |_ 
+ \_____  \ /     \\__  \  /  ___/  |  \   |    |  _/\_  __ \__  \ _/ ___\|  |/ // __ \   __\
+ /        \  Y Y  \/ __ \_\___ \|   Y  \  |    |   \ |  | \// __ \\  \___|    <\  ___/|  |  
+/_______  /__|_|  (____  /____  >___|  /  |______  / |__|  (____  /\___  >__|_ \\___  >__|  
+        \/      \/     \/     \/     \/          \/             \/     \/     \/    \/      ''')
+    print('Created by: Owen Kaechele, Peter Groom, Isaac Roberts, Justin Baskaran\n')
+    print('Logo created using: patorjk.com\n\n\n')
+    print("_____________________________________________________________________________________________\n\n\n")
+
 
 def match_maker(bracket):
     """
@@ -77,7 +88,14 @@ def match_maker(bracket):
     :return: bracket
     """
     match_list = []
-    #print(bracket.player_list)
+    j = 4
+    while j < bracket.size:
+        j *= 2
+    if len(bracket.player_list) < j:
+        diff = j - len(bracket.player_list)
+        dummy_players = [None] * diff
+        bracket.player_list = bracket.player_list + dummy_players
+    print(bracket.player_list)
     for i in range(math.ceil(bracket.size / 2)):
         single_match = [None, None]
         single_match[0] = bracket.player_list[i]
@@ -88,7 +106,10 @@ def match_maker(bracket):
     for i in range(len(match_list)):
         print("-------------- Match-up ----------------")
         print("Player 1: " + str(match_list[i][0]))
-        print("Player 2: " + str(match_list[i][1]))
+        if match_list[i][1].name is None:
+            print("Gets a free pass for this round!")
+        else:
+            print("Player 2: " + str(match_list[i][1]))
     print("----------------------------------------")
 
 
@@ -124,12 +145,11 @@ def bracket_setup():
 
     if playersNum - len(player_list) > 0:
         for x in range(playersNum - len(player_list)):
-            name = "Person 0: Free Win"
+            name = None
             character = "p0"
             player = Player(name, character)
             player_list.append(player)
     bracket = Bracket(playersNum, player_list)
-<<<<<<< HEAD
     match_maker(bracket)
 
     # match_list = []
@@ -167,45 +187,6 @@ def bracket_setup():
 def checkPlayers(players, playersDecrement):
 #    print("Fixed Length: " + str(players))
 #    print("Players Decrement: " + str(playersDecrement))
-=======
-
-    cmd_beg= 'espeak '
-    cmd_end= ' 2>/dev/null' # To dump the std errors to /dev/null
-
-    print("--------Tournament Bracket------------")
-    for y in range (0,math.ceil(bracket_size/2)):
-        
-        if y+1 != playersNum and y != 0:
-            y = y+1
-        print("--------Bracket:------------")
-        print(y)
-        print ("Player 1:" + player_list[y].name)
-        
-        # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
-        # #Calls the Espeak TTS Engine to read aloud the Numbers
-	    # call([cmd_beg+cmd+cmd_end], shell=True)
-        # num2words("Versus")
-
-
-        if y+1 != playersNum:
-            y = y+1
-        print ("Player 2: " + player_list[y].name)
-        # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
-        # #Calls the Espeak TTS Engine to read aloud the Numbers
-	    # call([cmd_beg+cmd+cmd_end], shell=True)
-
-        print(y)
-        print("-----------------------------")
-        
-            
-
-
-
-
-def checkPlayers(players,playersDecrement):
-    print("Fixed Length: " + str(players))
-    print ("Players Decrement: " + str(playersDecrement) )
->>>>>>> 173157c1119d1b89547b6eb276e18e4484cc68c5
     if playersDecrement == 1.0:
         return players
 
@@ -227,46 +208,52 @@ def bracket_progression(bracket):
     #print(bracket.current_matches)
     winning_players = []
     for match in bracket.current_matches:
-        winner = input("Who won between " + str(match[0]) + " and " + str(match[1]) + "?\n")
-        for player in bracket.player_list:
-            if player.name == winner:
-                winning_players.append(player)
+        if match[1].name is not None:
+            winner = input("Who won between " + str(match[0]) + " and " + str(match[1]) + "?\n")
+            for player in bracket.player_list:
+                if player.name == winner:
+                    winning_players.append(player)
+        else:
+            winning_players.append(match[0])
     for player in bracket.player_list:
         if player not in winning_players:
             player.status = 0  # Deactivate losing player's status
-            bracket.size -= 1
+            #bracket.size -= 1
     bracket.player_list = winning_players
+    #print(winning_players)  # Correct up to here
+    bracket.size = len(winning_players)
     playersNum = checkPlayers(len(bracket.player_list), len(bracket.player_list))
-    match_list = []
-    print("--------Tournament Bracket------------")
-    for y in range(0, math.ceil(bracket.size / 2)):
-        single_match = [None, None]
-        if y + 1 != playersNum and y != 0:
-            y = y + 1
-        print("---------Bracket:------------")
-        #       print(y)
-        print("Player 1:" + bracket.player_list[y].name)
-        single_match[0] = bracket.player_list[y]
+    match_maker(bracket)
+    # match_list = []
+    # print("--------Tournament Bracket------------")
+    # for y in range(0, math.ceil(bracket.size / 2)):
+    #     single_match = [None, None]
+    #     if y + 1 != playersNum and y != 0:
+    #         y = y + 1
+    #     print("---------Bracket:------------")
+    #     #       print(y)
+    #     print("Player 1:" + bracket.player_list[y].name)
+    #     single_match[0] = bracket.player_list[y]
 
         # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
         # #Calls the Espeak TTS Engine to read aloud the Numbers
         # call([cmd_beg+cmd+cmd_end], shell=True)
         # num2words("Versus")
 
-        if y + 1 != playersNum:
-            y = y + 1
-        print("Player 2: " + bracket.player_list[y].name)
-        single_match[1] = bracket.player_list[y]
+        # if y + 1 != playersNum:
+        #     y = y + 1
+        # print("Player 2: " + bracket.player_list[y].name)
+        # single_match[1] = bracket.player_list[y]
 
         # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
         # #Calls the Espeak TTS Engine to read aloud the Numbers
         # call([cmd_beg+cmd+cmd_end], shell=True)
 
-        match_list.append(single_match)
+        #match_list.append(single_match)
 
     #       print(y)
-    print("-----------------------------")
-    bracket.current_matches = match_list
+    #print("-----------------------------")
+    #bracket.current_matches = match_list
     return bracket
 
 
@@ -290,15 +277,26 @@ def final_round(bracket):
     :return: none
     """
     winner = input("Who won between " + str(bracket.current_matches[0][0]) + " and " + str(bracket.current_matches[0][1]) + "?\n")
-    for player in bracket.player_list:
-        if player.name == winner:
-            winning_player = player
-    print("\n---------- A Winner Has Been Found! ---------\n")
-    print("The winner is " + str(winning_player) + "!")
-    print("Congratulations! We are all very impressed! \n(and totally convinced you didn't cheat)")
+    print(r'''_________                                     __        .__          __  .__                      
+\_   ___ \  ____   ____    ________________ _/  |_ __ __|  | _____ _/  |_|__| ____   ____   ______
+/    \  \/ /  _ \ /    \  / ___\_  __ \__  \\   __\  |  \  | \__  \\   __\  |/  _ \ /    \ /  ___/
+\     \___(  <_> )   |  \/ /_/  >  | \// __ \|  | |  |  /  |__/ __ \|  | |  (  <_> )   |  \\___ \ 
+ \______  /\____/|___|  /\___  /|__|  (____  /__| |____/|____(____  /__| |__|\____/|___|  /____  >
+        \/            \//_____/            \/                     \/                    \/     \/''')
+    print("\n                           ---------- A Winner Has Been Found! ----------\n")
+    print("                                         The winner is " + winner + "!")
+    print("                            Congratulations! We are all very impressed!")
+    print("                             (and totally convinced you didn't cheat)")
+    print(r'''   _____      _       _       _    _            _          ___   ___  __  ___  
+  / ____|    | |     (_)     | |  | |          | |        |__ \ / _ \/_ |/ _ \ 
+ | |     __ _| |_   ___ _ __ | |__| | __ _  ___| | _____     ) | | | || | (_) |
+ | |    / _` | \ \ / / | '_ \|  __  |/ _` |/ __| |/ / __|   / /| | | || |\__, |
+ | |___| (_| | |\ V /| | | | | |  | | (_| | (__|   <\__ \  / /_| |_| || |  / / 
+  \_____\__,_|_| \_/ |_|_| |_|_|  |_|\__,_|\___|_|\_\___/ |____|\___/ |_| /_/ ''')
 
 
 def main():
+    banner()
     bracket = bracket_setup()
     while len(bracket.current_matches) > 1:
         bracket = bracket_progression(bracket)
