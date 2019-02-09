@@ -1,10 +1,17 @@
 # Smash Bracket v1
 # CalvinHacks 2019
 # Created by:
+<<<<<<< HEAD
 
 #from num2words import num2words
 from random import shuffle
 import math
+=======
+from num2words import num2words
+from random import shuffle
+import math
+
+>>>>>>> 173157c1119d1b89547b6eb276e18e4484cc68c5
 
 
 class Bracket:
@@ -122,6 +129,7 @@ def bracket_setup():
             player = Player(name, character)
             player_list.append(player)
     bracket = Bracket(playersNum, player_list)
+<<<<<<< HEAD
     match_maker(bracket)
 
     # match_list = []
@@ -159,6 +167,45 @@ def bracket_setup():
 def checkPlayers(players, playersDecrement):
 #    print("Fixed Length: " + str(players))
 #    print("Players Decrement: " + str(playersDecrement))
+=======
+
+    cmd_beg= 'espeak '
+    cmd_end= ' 2>/dev/null' # To dump the std errors to /dev/null
+
+    print("--------Tournament Bracket------------")
+    for y in range (0,math.ceil(bracket_size/2)):
+        
+        if y+1 != playersNum and y != 0:
+            y = y+1
+        print("--------Bracket:------------")
+        print(y)
+        print ("Player 1:" + player_list[y].name)
+        
+        # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
+        # #Calls the Espeak TTS Engine to read aloud the Numbers
+	    # call([cmd_beg+cmd+cmd_end], shell=True)
+        # num2words("Versus")
+
+
+        if y+1 != playersNum:
+            y = y+1
+        print ("Player 2: " + player_list[y].name)
+        # cmd=num2words(player_list[y].name) #To convert the Numbers to Text
+        # #Calls the Espeak TTS Engine to read aloud the Numbers
+	    # call([cmd_beg+cmd+cmd_end], shell=True)
+
+        print(y)
+        print("-----------------------------")
+        
+            
+
+
+
+
+def checkPlayers(players,playersDecrement):
+    print("Fixed Length: " + str(players))
+    print ("Players Decrement: " + str(playersDecrement) )
+>>>>>>> 173157c1119d1b89547b6eb276e18e4484cc68c5
     if playersDecrement == 1.0:
         return players
 
