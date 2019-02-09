@@ -107,7 +107,7 @@ def bracket_setup():
         single_match = [None, None]
         if y + 1 != playersNum and y != 0:
             y = y + 1
-        print("--------Bracket:------------")
+        print("---------Bracket:------------")
 #       print(y)
         print("Player 1: " + player_list[y].name)
         single_match[0] = player_list[y]
@@ -173,7 +173,7 @@ def bracket_progression(bracket):
         single_match = [None, None]
         if y + 1 != playersNum and y != 0:
             y = y + 1
-        print("--------Bracket:------------")
+        print("---------Bracket:------------")
         #       print(y)
         print("Player 1:" + bracket.player_list[y].name)
         single_match[0] = bracket.player_list[y]
@@ -212,11 +212,29 @@ def random_seed(player_list, bracket_size):
     return player_list
 
 
+def final_round(bracket):
+    """
+    Once the final round has been displayed, prompt user for overall
+     winner and display congrats message
+    :param bracket: bracket.size == 2, Already has been displayed
+    :return: none
+    """
+    winner = input("Who won between " + str(bracket.current_matches[0][0]) + " and " + str(bracket.current_matches[0][1]) + "?\n")
+    for player in bracket.player_list:
+        if player.name == winner:
+            winning_player = player
+    print("\n---------- A Winner Has Been Found! ---------\n")
+    print("The winner is " + str(winning_player) + "!")
+    print("Congratulations! We are all very impressed! \n(and totally convinced you didn't cheat)")
+
+
+
+
 def main():
     bracket = bracket_setup()
     while len(bracket.current_matches) > 1:
         bracket = bracket_progression(bracket)
-    # final_round
+    final_round(bracket)
 
 
 main()
