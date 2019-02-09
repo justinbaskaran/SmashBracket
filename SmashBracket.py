@@ -18,6 +18,7 @@ class Bracket:
         self.size = bracket_size
         self.player_list = player_list
         self.current_matches = []
+        self.name_list = []
 
     def __repr__(self):
         """
@@ -138,10 +139,10 @@ def bracket_setup():
             player.seed = my_seed
     player_list = sort_players(player_list)
 
-    print(len(player_list))
+    #print(len(player_list))
     # playersNum = checkPlayers(17,17)
     playersNum = checkPlayers(len(player_list), len(player_list))
-    print(playersNum)
+    #print(playersNum)
 
     if playersNum - len(player_list) > 0:
         for x in range(playersNum - len(player_list)):
@@ -181,6 +182,10 @@ def bracket_setup():
     # #       print(y)
     # print("-----------------------------")
     # bracket.current_matches = match_list
+    name_list = []
+    for player in bracket.player_list:
+        name_list.append(player.name)
+    bracket.name_list = name_list
     return bracket
 
 
@@ -210,6 +215,8 @@ def bracket_progression(bracket):
     for match in bracket.current_matches:
         if match[1].name is not None:
             winner = input("Who won between " + str(match[0]) + " and " + str(match[1]) + "?\n")
+            if winner not in bracket.name_list:
+                winner = input("Error. Please input the winning player's name!\n")
             for player in bracket.player_list:
                 if player.name == winner:
                     winning_players.append(player)
@@ -287,12 +294,13 @@ def final_round(bracket):
     print("                                         The winner is " + winner + "!")
     print("                            Congratulations! We are all very impressed!")
     print("                             (and totally convinced you didn't cheat)")
-    print(r'''   _____      _       _       _    _            _          ___   ___  __  ___  
-  / ____|    | |     (_)     | |  | |          | |        |__ \ / _ \/_ |/ _ \ 
- | |     __ _| |_   ___ _ __ | |__| | __ _  ___| | _____     ) | | | || | (_) |
- | |    / _` | \ \ / / | '_ \|  __  |/ _` |/ __| |/ / __|   / /| | | || |\__, |
- | |___| (_| | |\ V /| | | | | |  | | (_| | (__|   <\__ \  / /_| |_| || |  / / 
-  \_____\__,_|_| \_/ |_|_| |_|_|  |_|\__,_|\___|_|\_\___/ |____|\___/ |_| /_/ ''')
+    print("Created at:")
+    print(r'''           _____      _       _       _    _            _          ___   ___  __  ___  
+          / ____|    | |     (_)     | |  | |          | |        |__ \ / _ \/_ |/ _ \ 
+         | |     __ _| |_   ___ _ __ | |__| | __ _  ___| | _____     ) | | | || | (_) |
+         | |    / _` | \ \ / / | '_ \|  __  |/ _` |/ __| |/ / __|   / /| | | || |\__, |
+         | |___| (_| | |\ V /| | | | | |  | | (_| | (__|   <\__ \  / /_| |_| || |  / / 
+          \_____\__,_|_| \_/ |_|_| |_|_|  |_|\__,_|\___|_|\_\___/ |____|\___/ |_| /_/ ''')
 
 
 def main():
